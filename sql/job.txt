@@ -1,0 +1,4 @@
+create table jobs (
+	jobID int NOT NULL primary key,
+    jobName varchar(255)
+);

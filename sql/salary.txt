@@ -1,0 +1,5 @@
+create table salary (
+	personnelID int NOT NULL,
+    salary int,
+    currency varchar(5)
+);
