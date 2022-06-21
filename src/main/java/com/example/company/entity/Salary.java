@@ -11,14 +11,14 @@ import javax.persistence.*;
 public class Salary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int salaryId;
+    private Long id;
     private int salary;
     @Column(length = 3)
     private String currency;
 
     @OneToOne
-    @JoinColumn(name = "salary_id", referencedColumnName = "personnel_id")
-    private Personnel personnel;
+    @JoinColumn(name = "worker_id")
+    private Worker worker;
 
     public Salary(int salary, String currency) {
         this.salary = salary;
@@ -26,9 +26,22 @@ public class Salary {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Salary salary = (Salary) o;
+        return id.equals(salary.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Salary{" +
-                "salaryId=" + salaryId +
+                "id=" + id +
                 ", salary=" + salary +
                 ", currency='" + currency + '\'' +
                 '}';
