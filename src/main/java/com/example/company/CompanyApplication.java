@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Log4j2
@@ -17,80 +18,93 @@ import java.util.List;
 public class CompanyApplication {
 
 	public static void main(String[] args) {
-		log.info("test log");
 		SpringApplication.run(CompanyApplication.class, args);
-		log.info("test log 2");
-	}
-
-	@PostConstruct
-	public void init() {
-		log.info("test log 3");
 	}
 
 	@Bean
-	public CommandLineRunner demo(WorkerRepository repository) {
+	public CommandLineRunner initWorkers(WorkerRepository repository) {
 		return (args) -> {
-			log.info("demo");
+			log.info("initWorkers");
 
-			Worker worker1 = new Worker("Yurii", "Liakhor");
-			Salary salary1 = new Salary(999999999, "UAH");
-			worker1.setSalary(salary1);
-			salary1.setWorker(worker1);
+			List<Worker> workerList = Arrays.asList(
+					new Worker("David", "Gilmour"),
+					Worker.builder().firstName("Юрій").lastName("Ляхор").salary(new Salary(3000, "USD")).build(),
+					new Worker("Vitaliy", "Kim"),
+					new Worker("David", "Palmer"),
+					new Worker("Патрон", "Пес")
+			);
 
-			repository.save(new Worker("Chloe", "O'Brian"));
-			repository.save(worker1);
-			repository.save(new Worker("Kim", "Bauer"));
-			repository.save(new Worker("David", "Palmer"));
-			repository.save(new Worker("Michelle", "Dessler"));
+			repository.saveAll(workerList);
 		};
 	}
 
 	@Bean
-	public CommandLineRunner demo2(CarRepository carRepository, WorkerRepository workerRepository) {
+	public CommandLineRunner initCars(CarRepository carRepository, WorkerRepository workerRepository) {
 		return (args) -> {
-			log.info("demo2");
+			log.info("initCars");
 
-			Car car1 = new Car("Tesla", "X");
-			Car car2 = new Car("Tesla", "Y");
+			Worker worker1 = workerRepository.findFirstByFirstName("Юрій");
+			List<Car> carList = Arrays.asList(
+					new Car("Tesla", "X"),
+					new Car("Tesla", "Y")
+			);
+			carList.get(0).setWorker(worker1);
+			carList.get(1).setWorker(worker1);
 
-			Worker worker1 = workerRepository.findFirstByFirstName("Yurii");
-			car1.setWorker(worker1);
-			car2.setWorker(worker1);
-
-			carRepository.save(car1);
-			carRepository.save(car2);
+			carRepository.saveAll(carList);
 		};
 	}
 
 	@Bean
-	public CommandLineRunner demo3(JobRepository jobRepository, WorkerRepository workerRepository) {
+	public CommandLineRunner initJobs(JobRepository jobRepository, WorkerRepository workerRepository) {
 		return (args) -> {
-			log.info("demo3");
+			log.info("initJobs");
 
-			Job job1 = new Job("Programmer");
+			List<Job> jobList = Arrays.asList(
+					new Job("Programmer"),
+					new Job("Military"),
+					new Job("Singer")
+			);
+			jobRepository.saveAll(jobList);
 
-			jobRepository.save(job1);
+			Worker worker1 = workerRepository.findFirstByFirstName("Юрій");
+			worker1.setJob(jobList.get(0));
 
-			Worker worker1 = workerRepository.findFirstByFirstName("Yurii");
-			worker1.setJob(job1);
+			Worker worker2 = workerRepository.findFirstByFirstName("Патрон");
+			worker2.setJob(jobList.get(1));
+
+			Worker worker3 = workerRepository.findFirstByFirstName("David");
+			worker3.setJob(jobList.get(2));
 
 			workerRepository.save(worker1);
+			workerRepository.save(worker2);
+			workerRepository.save(worker3);
 		};
 	}
 
 	@Bean
-	public CommandLineRunner demo4(CompanyRepository companyRepository, WorkerRepository workerRepository) {
+	public CommandLineRunner initCompanies(CompanyRepository companyRepository, WorkerRepository workerRepository) {
 		return (args) -> {
-			log.info("demo4");
+			log.info("initCompanies");
 
-			Company company1 = new Company("SkyService");
+			List<Company> companyList = Arrays.asList(
+					new Company("SkyService"),
+					new Company("EPAM"),
+					new Company("Luxoft"),
+					new Company("GlobalLogic"),
+					new Company("Ukrainian Armed Forces")
+			);
 
-			companyRepository.save(company1);
+			companyRepository.saveAll(companyList);
 
-			Worker worker1 = workerRepository.findFirstByFirstName("Yurii");
-			worker1.setCompany(company1);
+			Worker worker1 = workerRepository.findFirstByFirstName("Юрій");
+			worker1.setCompany(companyList.get(0));
+
+			Worker worker2 = workerRepository.findFirstByFirstName("Патрон");
+			worker2.setCompany(companyList.get(4));
 
 			workerRepository.save(worker1);
+			workerRepository.save(worker2);
 		};
 	}
 }

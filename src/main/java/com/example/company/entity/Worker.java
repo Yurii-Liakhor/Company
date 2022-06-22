@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Worker {
     @Id
@@ -59,8 +61,8 @@ public class Worker {
                 ", middleName='" + middleName + '\'' +
                 ", birthDate=" + birthDate +
                 ", salary=" + salary +
-//                ", job=" + job +
-//                ", cars=" + cars +
+                ", job=" + job +
+                ", cars=" + cars +
                 '}';
     }
 }
