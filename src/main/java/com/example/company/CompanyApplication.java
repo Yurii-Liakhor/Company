@@ -1,13 +1,7 @@
 package com.example.company;
 
-import com.example.company.entity.Car;
-import com.example.company.entity.Job;
-import com.example.company.entity.Worker;
-import com.example.company.entity.Salary;
-import com.example.company.repository.CarRepository;
-import com.example.company.repository.JobRepository;
-import com.example.company.repository.SalaryRepository;
-import com.example.company.repository.WorkerRepository;
+import com.example.company.entity.*;
+import com.example.company.repository.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -78,12 +72,24 @@ public class CompanyApplication {
 			jobRepository.save(job1);
 
 			Worker worker1 = workerRepository.findFirstByFirstName("Yurii");
-//			List<Worker> workerList = new ArrayList<>();
-//			workerList.add(worker1);
-//			job1.setWorkers(workerList);
 			worker1.setJob(job1);
 
-//			jobRepository.save(job1);
+			workerRepository.save(worker1);
+		};
+	}
+
+	@Bean
+	public CommandLineRunner demo4(CompanyRepository companyRepository, WorkerRepository workerRepository) {
+		return (args) -> {
+			log.info("demo4");
+
+			Company company1 = new Company("SkyService");
+
+			companyRepository.save(company1);
+
+			Worker worker1 = workerRepository.findFirstByFirstName("Yurii");
+			worker1.setCompany(company1);
+
 			workerRepository.save(worker1);
 		};
 	}

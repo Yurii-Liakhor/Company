@@ -26,6 +26,9 @@ public class Worker {
     @ManyToOne
     private Job job;
 
+    @ManyToOne
+    private Company company;
+
     @OneToMany(mappedBy = "worker")
     private List<Car> cars = new ArrayList<>();
 
