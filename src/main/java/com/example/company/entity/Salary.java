@@ -20,8 +20,7 @@ public class Salary {
     @Column(length = 3)
     private String currency;
 
-    @OneToOne
-    @JoinColumn(name = "worker_id")
+    @OneToOne(mappedBy = "salary")
     private Worker worker;
 
     public Salary(int salary, String currency) {

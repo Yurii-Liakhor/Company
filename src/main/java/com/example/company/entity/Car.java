@@ -22,7 +22,12 @@ public class Car {
     private String model;
 
     @ManyToOne
+    @JoinColumn(name = "worker_id")
     private Worker worker;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public Car(String manufacturer, String model) {
         this.manufacturer = manufacturer;

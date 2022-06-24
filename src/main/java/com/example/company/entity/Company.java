@@ -24,6 +24,9 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List<Worker> workers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "company")
+    private List<Car> cars = new ArrayList<>();
+
     public Company(String companyName) {
         this.companyName = companyName;
     }

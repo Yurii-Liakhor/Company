@@ -13,6 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(indexes = {@Index(name = "passport_index", columnList = "passport", unique = true)})
 public class Worker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +21,11 @@ public class Worker {
     private String firstName;
     private String lastName;
     private String middleName;
+    @Column(unique = true, nullable = false)
+    private String passport;
     private Date birthDate;
 
-    @OneToOne(mappedBy = "worker", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Salary salary;
 
     @ManyToOne
@@ -34,9 +37,10 @@ public class Worker {
     @OneToMany(mappedBy = "worker")
     private List<Car> cars = new ArrayList<>();
 
-    public Worker(String firstName, String lastName) {
+    public Worker(String firstName, String lastName, String passport) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.passport = passport;
     }
 
     @Override

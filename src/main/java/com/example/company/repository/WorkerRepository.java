@@ -12,4 +12,6 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
     List<Worker> findAllByFirstName(String firsName);
 
     Worker findFirstByFirstName(String firstName);
+
+    Worker findWorkerByPassport(String passport);
 }

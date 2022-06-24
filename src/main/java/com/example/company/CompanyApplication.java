@@ -9,9 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Log4j2
 @SpringBootApplication
@@ -27,19 +25,66 @@ public class CompanyApplication {
 			log.info("initWorkers");
 
 			List<Worker> workerList = Arrays.asList(
-					new Worker("David", "Gilmour"),
-					Worker.builder().firstName("Юрій").lastName("Ляхор").salary(new Salary(3000, "USD")).build(),
-					new Worker("Vitaliy", "Kim"),
-					new Worker("David", "Palmer"),
-					new Worker("Патрон", "Пес")
+					new Worker("David", "Gilmour", "FR815369"),
+					Worker.builder().firstName("Юрій").lastName("Ляхор").passport("EE148822").salary(new Salary(3, "USD")).build(),
+					new Worker("Vitaliy", "Kim", "KK123532"),
+					new Worker("David", "Palmer", "HI012353"),
+					new Worker("Патрон", "Пес", "KY212432")
 			);
+
+			workerList.get(4).setBirthDate(new GregorianCalendar(1880, Calendar.FEBRUARY, 11).getTime());
 
 			repository.saveAll(workerList);
 		};
 	}
 
 	@Bean
-	public CommandLineRunner initCars(CarRepository carRepository, WorkerRepository workerRepository) {
+	public CommandLineRunner initSalary(WorkerRepository repository) {
+		return (args) -> {
+			log.info("initSalary");
+
+			Worker worker1 = repository.findWorkerByPassport("FR815369");
+			Worker worker2 = repository.findWorkerByPassport("KK123532");
+			Worker worker3 = repository.findWorkerByPassport("HI012353");
+			Worker worker4 = repository.findWorkerByPassport("KY212432");
+
+			worker1.setSalary(new Salary(999999, "GBP"));
+			worker2.setSalary(new Salary(999999999, "UAH"));
+			worker3.setSalary(new Salary(999999999, "HYI"));
+			worker4.setSalary(new Salary(999999999, "UAH"));
+
+			repository.saveAll(Arrays.asList(worker1, worker2, worker3, worker4));
+		};
+	}
+
+	@Bean
+	public CommandLineRunner initCompanies(CompanyRepository companyRepository, WorkerRepository workerRepository) {
+		return (args) -> {
+			log.info("initCompanies");
+
+			List<Company> companyList = Arrays.asList(
+					new Company("SkyService"),
+					new Company("EPAM"),
+					new Company("Luxoft"),
+					new Company("GlobalLogic"),
+					new Company("Ukrainian Armed Forces")
+			);
+
+			companyRepository.saveAll(companyList);
+
+			Worker worker1 = workerRepository.findFirstByFirstName("Юрій");
+			worker1.setCompany(companyList.get(0));
+
+			Worker worker2 = workerRepository.findFirstByFirstName("Патрон");
+			worker2.setCompany(companyList.get(4));
+
+			workerRepository.save(worker1);
+			workerRepository.save(worker2);
+		};
+	}
+
+	@Bean
+	public CommandLineRunner initCars(CarRepository carRepository, WorkerRepository workerRepository, CompanyRepository companyRepository) {
 		return (args) -> {
 			log.info("initCars");
 
@@ -50,6 +95,10 @@ public class CompanyApplication {
 			);
 			carList.get(0).setWorker(worker1);
 			carList.get(1).setWorker(worker1);
+
+			Company company1 = companyRepository.findFirstByCompanyName("SkyService");
+			carList.get(0).setCompany(company1);
+			carList.get(1).setCompany(company1);
 
 			carRepository.saveAll(carList);
 		};
@@ -79,32 +128,6 @@ public class CompanyApplication {
 			workerRepository.save(worker1);
 			workerRepository.save(worker2);
 			workerRepository.save(worker3);
-		};
-	}
-
-	@Bean
-	public CommandLineRunner initCompanies(CompanyRepository companyRepository, WorkerRepository workerRepository) {
-		return (args) -> {
-			log.info("initCompanies");
-
-			List<Company> companyList = Arrays.asList(
-					new Company("SkyService"),
-					new Company("EPAM"),
-					new Company("Luxoft"),
-					new Company("GlobalLogic"),
-					new Company("Ukrainian Armed Forces")
-			);
-
-			companyRepository.saveAll(companyList);
-
-			Worker worker1 = workerRepository.findFirstByFirstName("Юрій");
-			worker1.setCompany(companyList.get(0));
-
-			Worker worker2 = workerRepository.findFirstByFirstName("Патрон");
-			worker2.setCompany(companyList.get(4));
-
-			workerRepository.save(worker1);
-			workerRepository.save(worker2);
 		};
 	}
 }
