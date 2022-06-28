@@ -20,6 +20,8 @@ public class Car {
     private String manufacturer;
     @Column
     private String model;
+    @Column(unique = true, nullable = false)
+    private String carNumber;
 
     @ManyToOne
     @JoinColumn(name = "worker_id")
@@ -29,9 +31,10 @@ public class Car {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    public Car(String manufacturer, String model) {
+    public Car(String manufacturer, String model, String carNumber) {
         this.manufacturer = manufacturer;
         this.model = model;
+        this.carNumber = carNumber;
     }
 
     @Override

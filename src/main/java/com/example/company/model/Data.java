@@ -1,5 +1,6 @@
 package com.example.company.model;
 
+import com.example.company.dto.CarDTO;
 import com.example.company.dto.WorkerDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -15,4 +16,7 @@ import javax.persistence.JoinColumn;
 public class Data {
     @JsonProperty("worker")
     private WorkerDTO workerDTO;
+
+    @JsonProperty("car")
+    private CarDTO carDTO;
 }

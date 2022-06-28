@@ -28,13 +28,13 @@ public class Worker {
     @OneToOne(cascade = CascadeType.ALL)
     private Salary salary;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Job job;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Company company;
 
-    @OneToMany(mappedBy = "worker")
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.PERSIST)
     private List<Car> cars = new ArrayList<>();
 
     public Worker(String firstName, String lastName, String passport) {

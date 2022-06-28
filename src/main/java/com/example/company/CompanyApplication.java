@@ -90,8 +90,8 @@ public class CompanyApplication {
 
 			Worker worker1 = workerRepository.findFirstByFirstName("Юрій");
 			List<Car> carList = Arrays.asList(
-					new Car("Tesla", "X"),
-					new Car("Tesla", "Y")
+					new Car("Tesla", "X", "AA1234BB"),
+					new Car("Tesla", "Y", "AI2482HH")
 			);
 			carList.get(0).setWorker(worker1);
 			carList.get(1).setWorker(worker1);
