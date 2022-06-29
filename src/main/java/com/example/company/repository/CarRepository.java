@@ -7,12 +7,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CarRepository extends CrudRepository<Car, Long> {
 
-    Car findCarByCarNumber(String carNumber);
+    Optional<Car> findCarByCarNumber(String carNumber);
 
     @Transactional
     void deleteCarByCarNumber(String carNumber);

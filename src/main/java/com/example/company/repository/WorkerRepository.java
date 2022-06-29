@@ -7,16 +7,20 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WorkerRepository extends CrudRepository<Worker, Long> {
-    Worker findWorkerById(long id);
+
+    Optional<Worker> findWorkerById(long id);
 
     List<Worker> findAllByFirstName(String firsName);
 
     Worker findFirstByFirstName(String firstName);
 
     Worker findWorkerByPassport(String passport);
+
+    List<Worker> findWorkersByJobId(Long jobId);
 
     @Transactional
     void deleteWorkerByPassport(String passport);

@@ -1,15 +1,20 @@
 package com.example.company;
 
 import com.example.company.entity.*;
-import com.example.company.repository.*;
+import com.example.company.repository.CarRepository;
+import com.example.company.repository.CompanyRepository;
+import com.example.company.repository.JobRepository;
+import com.example.company.repository.WorkerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 @Log4j2
 @SpringBootApplication

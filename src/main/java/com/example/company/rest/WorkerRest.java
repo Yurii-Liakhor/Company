@@ -1,21 +1,18 @@
 package com.example.company.rest;
 
 import com.example.company.dto.WorkerDTO;
-import com.example.company.entity.Car;
+import com.example.company.entity.Job;
 import com.example.company.entity.Worker;
 import com.example.company.model.Data;
-import com.example.company.model.Error;
 import com.example.company.model.Response;
 import com.example.company.model.Status;
 import com.example.company.repository.CarRepository;
+import com.example.company.repository.JobRepository;
 import com.example.company.repository.WorkerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -25,17 +22,20 @@ public class WorkerRest {
 
     private final WorkerRepository workerRepository;
     private final CarRepository carRepository;
+    private final JobRepository jobRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public WorkerRest(WorkerRepository workerRepository, CarRepository carRepository) {
+    public WorkerRest(WorkerRepository workerRepository, CarRepository carRepository, JobRepository jobRepository) {
         this.workerRepository = workerRepository;
         this.carRepository = carRepository;
+        this.jobRepository = jobRepository;
     }
 
     @GetMapping("/apiTest")
     public Response apiTest() {
         return Response.builder()
                 .status(Status.done)
+                .data(Data.builder().controllerName(this.getClass().getSimpleName()).build())
                 .build();
     }
 
@@ -44,6 +44,35 @@ public class WorkerRest {
         Worker worker = modelMapper.map(workerDTO, Worker.class);
         workerRepository.save(worker);
 
+        return Response.builder()
+                .status(Status.done)
+                .build();
+    }
+
+    @GetMapping("/addJobToWorker")
+    public Response addJobToWorker(@RequestParam Long workerId, @RequestParam Long jobId) {
+        Optional<Worker> workerOptional = workerRepository.findWorkerById(workerId);
+        if(workerOptional.isEmpty()) {
+            return Response.builder()
+                    .status(Status.error)
+                    .errors(new String[]{
+                            "worker doesn't exist"
+                    })
+                    .build();
+        }
+        Optional<Job> jobOptional = jobRepository.findJobById(jobId);
+        if(jobOptional.isEmpty()) {
+            return Response.builder()
+                    .status(Status.error)
+                    .errors(new String[]{
+                            "job doesn't exist"
+                    })
+                    .build();
+        }
+
+        workerOptional.get().setJob(jobOptional.get());
+
+        workerRepository.save(workerOptional.get());
         return Response.builder()
                 .status(Status.done)
                 .build();

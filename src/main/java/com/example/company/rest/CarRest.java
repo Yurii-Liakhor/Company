@@ -1,16 +1,15 @@
 package com.example.company.rest;
 
 import com.example.company.dto.CarDTO;
-import com.example.company.dto.WorkerDTO;
 import com.example.company.entity.Car;
-import com.example.company.entity.Worker;
 import com.example.company.model.Data;
 import com.example.company.model.Response;
 import com.example.company.model.Status;
 import com.example.company.repository.CarRepository;
-import com.example.company.repository.WorkerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/car")
@@ -27,6 +26,7 @@ public class CarRest {
     public Response apiTest() {
         return Response.builder()
                 .status(Status.done)
+                .data(Data.builder().controllerName(this.getClass().getSimpleName()).build())
                 .build();
     }
 
@@ -42,13 +42,16 @@ public class CarRest {
 
     @GetMapping("/getCar")
     public Response getCar(@RequestParam String carNumber) {
-        Car car = carRepository.findCarByCarNumber(carNumber);
-        if(car == null) {
+        Optional<Car> optionalCar = carRepository.findCarByCarNumber(carNumber);
+        if(optionalCar.isEmpty()) {
             return Response.builder()
                     .status(Status.error)
+                    .errors(new String[]{
+                            "no cars were found"
+                    })
                     .build();
         }
-        CarDTO carDTO = modelMapper.map(car, CarDTO.class);
+        CarDTO carDTO = modelMapper.map(optionalCar.get(), CarDTO.class);
         return Response.builder()
                 .status(Status.done)
                 .data(Data.builder()
