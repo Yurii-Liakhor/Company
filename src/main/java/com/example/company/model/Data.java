@@ -1,9 +1,6 @@
 package com.example.company.model;
 
-import com.example.company.dto.CarDTO;
-import com.example.company.dto.CompanyDTO;
-import com.example.company.dto.JobDTO;
-import com.example.company.dto.WorkerDTO;
+import com.example.company.dto.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +20,6 @@ public class Data {
     private JobDTO jobDTO;
     @JsonProperty("company")
     private CompanyDTO companyDTO;
+    @JsonProperty("salary")
+    private SalaryDTO salaryDTO;
 }

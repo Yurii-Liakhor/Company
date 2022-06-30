@@ -2,10 +2,13 @@ package com.example.company.rest;
 
 import com.example.company.dto.CarDTO;
 import com.example.company.entity.Car;
+import com.example.company.entity.Job;
+import com.example.company.entity.Worker;
 import com.example.company.model.Data;
 import com.example.company.model.Response;
 import com.example.company.model.Status;
 import com.example.company.repository.CarRepository;
+import com.example.company.repository.WorkerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +19,12 @@ import java.util.Optional;
 public class CarRest {
 
     private final CarRepository carRepository;
+    private final WorkerRepository workerRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public CarRest(CarRepository carRepository) {
+    public CarRest(CarRepository carRepository, WorkerRepository workerRepository) {
         this.carRepository = carRepository;
+        this.workerRepository = workerRepository;
     }
 
     @GetMapping("/apiTest")
@@ -35,6 +40,34 @@ public class CarRest {
         Car car = modelMapper.map(carDTO, Car.class);
         carRepository.save(car);
 
+        return Response.builder()
+                .status(Status.done)
+                .build();
+    }
+
+    @GetMapping("/addCarToWorker")
+    public Response addCarToWorker(@RequestParam String carNumber, @RequestParam Long workerId) {
+        Optional<Car> carOptional = carRepository.findCarByCarNumber(carNumber);
+        if(carOptional.isEmpty()) {
+            return Response.builder()
+                    .status(Status.error)
+                    .errors(new String[]{
+                            "car doesn't exist"
+                    })
+                    .build();
+        }
+        Optional<Worker> workerOptional = workerRepository.findWorkerById(workerId);
+        if(workerOptional.isEmpty()) {
+            return Response.builder()
+                    .status(Status.error)
+                    .errors(new String[]{
+                            "worker doesn't exist"
+                    })
+                    .build();
+        }
+
+        carOptional.get().setWorker(workerOptional.get());
+        carRepository.save(carOptional.get());
         return Response.builder()
                 .status(Status.done)
                 .build();

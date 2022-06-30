@@ -18,7 +18,7 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String jobName;
 
     @OneToMany(mappedBy = "job")

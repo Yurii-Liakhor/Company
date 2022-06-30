@@ -14,4 +14,12 @@ public class CompanyDTO {
     public CompanyDTO(String companyName) {
         this.companyName = companyName;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyDTO{" +
+                "id=" + id +
+                ", companyName='" + companyName + '\'' +
+                '}';
+    }
 }

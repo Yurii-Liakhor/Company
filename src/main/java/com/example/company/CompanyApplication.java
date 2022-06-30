@@ -34,7 +34,8 @@ public class CompanyApplication {
 					Worker.builder().firstName("Юрій").lastName("Ляхор").passport("EE148822").salary(new Salary(3, "USD")).build(),
 					new Worker("Vitaliy", "Kim", "KK123532"),
 					new Worker("David", "Palmer", "HI012353"),
-					new Worker("Патрон", "Пес", "KY212432")
+					new Worker("Патрон", "Пес", "KY212432"),
+					new Worker("Патрон", "Пес", "Клон", "KY2124322")
 			);
 
 			workerList.get(4).setBirthDate(new GregorianCalendar(1880, Calendar.FEBRUARY, 11).getTime());
@@ -48,10 +49,10 @@ public class CompanyApplication {
 		return (args) -> {
 			log.info("initSalary");
 
-			Worker worker1 = repository.findWorkerByPassport("FR815369");
-			Worker worker2 = repository.findWorkerByPassport("KK123532");
-			Worker worker3 = repository.findWorkerByPassport("HI012353");
-			Worker worker4 = repository.findWorkerByPassport("KY212432");
+			Worker worker1 = repository.findWorkerByPassport("FR815369").orElseGet(() -> Worker.builder().build());
+			Worker worker2 = repository.findWorkerByPassport("KK123532").orElseGet(() -> Worker.builder().build());
+			Worker worker3 = repository.findWorkerByPassport("HI012353").orElseGet(() -> Worker.builder().build());
+			Worker worker4 = repository.findWorkerByPassport("KY212432").orElseGet(() -> Worker.builder().build());
 
 			worker1.setSalary(new Salary(999999, "GBP"));
 			worker2.setSalary(new Salary(999999999, "UAH"));

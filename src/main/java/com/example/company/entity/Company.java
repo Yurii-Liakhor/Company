@@ -18,7 +18,7 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String companyName;
 
     @OneToMany(mappedBy = "company")

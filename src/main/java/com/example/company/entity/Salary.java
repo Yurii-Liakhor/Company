@@ -16,8 +16,9 @@ public class Salary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private int salary;
-    @Column(length = 3)
+    @Column(nullable = false, length = 3)
     private String currency;
 
     @OneToOne(mappedBy = "salary")

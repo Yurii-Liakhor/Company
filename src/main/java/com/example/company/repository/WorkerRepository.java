@@ -18,9 +18,10 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
 
     Worker findFirstByFirstName(String firstName);
 
-    Worker findWorkerByPassport(String passport);
+    Optional<Worker> findWorkerByPassport(String passport);
 
     List<Worker> findWorkersByJobId(Long jobId);
+    List<Worker> findWorkersByCompanyId(Long jobId);
 
     @Transactional
     void deleteWorkerByPassport(String passport);

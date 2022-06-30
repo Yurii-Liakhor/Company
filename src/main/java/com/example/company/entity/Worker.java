@@ -20,7 +20,9 @@ public class Worker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
     private String middleName;
     @Column(unique = true, nullable = false)
@@ -42,6 +44,13 @@ public class Worker {
     public Worker(String firstName, String lastName, String passport) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.passport = passport;
+    }
+
+    public Worker(String firstName, String lastName, String middleName, String passport) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
         this.passport = passport;
     }
 

@@ -53,6 +53,9 @@ public class JobRest {
         if(jobOptional.isEmpty()) {
             return Response.builder()
                     .status(Status.error)
+                    .errors(new String[]{
+                            "job wasn't found"
+                    })
                     .build();
         }
         JobDTO jobDTO = modelMapper.map(jobOptional.get(), JobDTO.class);
@@ -69,6 +72,9 @@ public class JobRest {
         if(jobOptional.isEmpty()) {
             return Response.builder()
                     .status(Status.error)
+                    .errors(new String[]{
+                            "job wasn't found"
+                    })
                     .build();
         }
 

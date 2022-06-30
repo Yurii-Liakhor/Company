@@ -16,9 +16,9 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String manufacturer;
-    @Column
+    @Column(nullable = false)
     private String model;
     @Column(unique = true, nullable = false)
     private String carNumber;
