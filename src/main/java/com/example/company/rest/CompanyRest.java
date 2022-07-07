@@ -15,6 +15,8 @@ import com.example.company.repository.JobRepository;
 import com.example.company.repository.WorkerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +57,7 @@ public class CompanyRest {
                 .build();
     }
 
+    @Cacheable(value = "company", key = "#companyId")
     @GetMapping("/getCompany")
     public Response getCompany(@RequestParam Long companyId) {
         Optional<Company> companyOptional = companyRepository.findById(companyId);
@@ -74,6 +77,7 @@ public class CompanyRest {
                 .build();
     }
 
+    @CacheEvict(value = "company", key = "#companyId")
     @GetMapping("/removeCompany")
     public Response removeCompany(@RequestParam Long companyId) {
         Optional<Company> companyOptional = companyRepository.findById(companyId);

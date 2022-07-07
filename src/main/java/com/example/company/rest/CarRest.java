@@ -10,6 +10,8 @@ import com.example.company.model.Status;
 import com.example.company.repository.CarRepository;
 import com.example.company.repository.WorkerRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -73,6 +75,7 @@ public class CarRest {
                 .build();
     }
 
+    @Cacheable(value = "car", key = "#carNumber")
     @GetMapping("/getCar")
     public Response getCar(@RequestParam String carNumber) {
         Optional<Car> optionalCar = carRepository.findCarByCarNumber(carNumber);
@@ -92,6 +95,7 @@ public class CarRest {
                 .build();
     }
 
+    @CacheEvict(value = "car", key = "#carNumber")
     @GetMapping("/removeCar")
     public Response removeCar(@RequestParam String carNumber) {
         carRepository.deleteCarByCarNumber(carNumber);

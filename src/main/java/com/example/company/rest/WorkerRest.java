@@ -14,6 +14,9 @@ import com.example.company.repository.SalaryRepository;
 import com.example.company.repository.WorkerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -46,6 +49,7 @@ public class WorkerRest {
 
     @PostMapping("/addWorker")
     public Response addWorker(@RequestBody WorkerDTO workerDTO) {
+        log.info("addWorker");
         Worker worker = modelMapper.map(workerDTO, Worker.class);
         workerRepository.save(worker);
 
@@ -82,8 +86,10 @@ public class WorkerRest {
                 .build();
     }
 
+    @Cacheable(value = "worker", key = "#passport")
     @GetMapping("/getWorker")
     public Response getWorker(@RequestParam String passport) {
+        log.info("getWorker");
         Optional<Worker> workerOptional = workerRepository.findWorkerByPassport(passport);
         if(workerOptional.isEmpty()) {
             return Response.builder()
@@ -131,8 +137,27 @@ public class WorkerRest {
                 .build();
     }
 
+    @CacheEvict(value = "worker", key = "#passport")
     @GetMapping("/removeWorker")
     public Response removeWorker(@RequestParam String passport) {
+        log.info("removeWorker");
+
+        Optional<Worker> workerOptional = workerRepository.findWorkerByPassport(passport);
+        if(workerOptional.isEmpty()) {
+            return Response.builder()
+                    .status(Status.error)
+                    .errors(new String[]{
+                            "worker wasn't found"
+                    })
+                    .build();
+        }
+
+        workerOptional.get().getCars().forEach(car -> {
+            car.setWorker(null);
+        });
+
+        carRepository.saveAll(workerOptional.get().getCars());
+
         workerRepository.deleteWorkerByPassport(passport);
         return Response.builder()
                 .status(Status.done)

@@ -10,6 +10,8 @@ import com.example.company.repository.JobRepository;
 import com.example.company.repository.WorkerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,6 +49,7 @@ public class JobRest {
                 .build();
     }
 
+    @Cacheable(value = "job", key = "#jobId")
     @GetMapping("/getJob")
     public Response getJob(@RequestParam Long jobId) {
         Optional<Job> jobOptional = jobRepository.findById(jobId);
@@ -66,6 +69,7 @@ public class JobRest {
                 .build();
     }
 
+    @CacheEvict(value = "job", key = "#jobId")
     @GetMapping("/removeJob")
     public Response removeJob(@RequestParam Long jobId) {
         Optional<Job> jobOptional = jobRepository.findById(jobId);
