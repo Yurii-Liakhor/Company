@@ -1,5 +1,7 @@
 package com.example.company.rest;
 
+import com.example.company.components.MyComponent;
+import com.example.company.components.MyComponent2;
 import com.example.company.dto.CarDTO;
 import com.example.company.entity.Car;
 import com.example.company.entity.Job;
@@ -9,17 +11,19 @@ import com.example.company.model.Response;
 import com.example.company.model.Status;
 import com.example.company.repository.CarRepository;
 import com.example.company.repository.WorkerRepository;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Log4j2
 @RestController
 @RequestMapping("/car")
 public class CarRest {
-
     private final CarRepository carRepository;
     private final WorkerRepository workerRepository;
     private final ModelMapper modelMapper = new ModelMapper();
@@ -27,6 +31,28 @@ public class CarRest {
     public CarRest(CarRepository carRepository, WorkerRepository workerRepository) {
         this.carRepository = carRepository;
         this.workerRepository = workerRepository;
+    }
+
+    @Autowired
+    private MyComponent myComponent;
+//    @Autowired
+//    private MyComponent2 myComponent2;
+
+    @GetMapping("/beanTest")
+    public Response beanTest() {
+        log.debug("beanTest");
+//        log.info("myComponent");
+        log.info(myComponent.getMyData().toString());
+        log.info(myComponent.getMyData().toString());
+        //
+//        log.info("myComponent2");
+//        log.info(myComponent2.getMyData());
+//        log.info(myComponent2.getMyData());
+
+        return Response.builder()
+                .status(Status.done)
+                .data(Data.builder().controllerName(this.getClass().getSimpleName()).build())
+                .build();
     }
 
     @GetMapping("/apiTest")
