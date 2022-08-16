@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -34,14 +35,14 @@ public class Company {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Company company = (Company) o;
-        return id.equals(company.id);
+        if (!(o instanceof Company)) return false;
+        Company c = (Company) o;
+        return Objects.equals(companyName, c.getCompanyName());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(companyName);
     }
 
     @Override

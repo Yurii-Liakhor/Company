@@ -1,11 +1,10 @@
 package com.example.company.rest;
 
-import com.example.company.dto.WorkerDTO;
+import com.example.company.dto.worker_dto.WorkerDTO;
 import com.example.company.model.Response;
 import com.example.company.model.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

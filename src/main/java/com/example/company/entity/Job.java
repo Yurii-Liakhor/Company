@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -31,14 +32,14 @@ public class Job {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Job job = (Job) o;
-        return id.equals(job.id);
+        if (!(o instanceof Job)) return false;
+        Job j = (Job) o;
+        return Objects.equals(jobName, j.getJobName());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(jobName);
     }
 
     @Override

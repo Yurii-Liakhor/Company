@@ -1,7 +1,8 @@
 package com.example.company.rest;
 
 import com.example.company.dto.SalaryDTO;
-import com.example.company.dto.WorkerDTO;
+import com.example.company.dto.worker_dto.SimpleWorkerDTO;
+import com.example.company.dto.worker_dto.WorkerDTO;
 import com.example.company.entity.Job;
 import com.example.company.entity.Salary;
 import com.example.company.entity.Worker;
@@ -10,12 +11,10 @@ import com.example.company.model.Response;
 import com.example.company.model.Status;
 import com.example.company.repository.CarRepository;
 import com.example.company.repository.JobRepository;
-import com.example.company.repository.SalaryRepository;
 import com.example.company.repository.WorkerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,16 +26,14 @@ import java.util.Optional;
 public class WorkerRest {
 
     private final WorkerRepository workerRepository;
-    private final CarRepository carRepository;
     private final JobRepository jobRepository;
-    private final SalaryRepository salaryRepository;
+    private final CarRepository carRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public WorkerRest(WorkerRepository workerRepository, CarRepository carRepository, JobRepository jobRepository, SalaryRepository salaryRepository) {
+    public WorkerRest(WorkerRepository workerRepository, JobRepository jobRepository, CarRepository carRepository) {
         this.workerRepository = workerRepository;
-        this.carRepository = carRepository;
         this.jobRepository = jobRepository;
-        this.salaryRepository = salaryRepository;
+        this.carRepository = carRepository;
     }
 
     @GetMapping("/apiTest")
@@ -104,6 +101,26 @@ public class WorkerRest {
                 .status(Status.done)
                 .data(Data.builder()
                         .workerDTO(workerDTO).build())
+                .build();
+    }
+
+    @GetMapping("/getSimpleWorker")
+    public Response getSimpleWorker(@RequestParam String passport) {
+        log.info("getSimpleWorker");
+        Optional<Worker> workerOptional = workerRepository.findSimpleWorkerByPassport(passport);
+        if(workerOptional.isEmpty()) {
+            return Response.builder()
+                    .status(Status.error)
+                    .errors(new String[]{
+                            "worker is empty"
+                    })
+                    .build();
+        }
+        SimpleWorkerDTO workerDTO = modelMapper.map(workerOptional.get(), SimpleWorkerDTO.class);
+        return Response.builder()
+                .status(Status.done)
+                .data(Data.builder()
+                        .simpleWorkerDTO(workerDTO).build())
                 .build();
     }
 

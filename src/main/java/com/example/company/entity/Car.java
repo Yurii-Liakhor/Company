@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -40,14 +41,16 @@ public class Car {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return id.equals(car.id);
+        if (!(o instanceof Car)) return false;
+        Car c = (Car) o;
+        return Objects.equals(manufacturer, c.getManufacturer())
+                && Objects.equals(model, c.getModel())
+                && Objects.equals(carNumber, c.getCarNumber());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(manufacturer, model, carNumber);
     }
 
     @Override

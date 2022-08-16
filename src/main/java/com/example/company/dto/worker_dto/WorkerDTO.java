@@ -1,11 +1,10 @@
-package com.example.company.dto;
+package com.example.company.dto.worker_dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 @Data

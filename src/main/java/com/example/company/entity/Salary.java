@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -32,14 +33,15 @@ public class Salary {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Salary salary = (Salary) o;
-        return id.equals(salary.id);
+        if (!(o instanceof Salary)) return false;
+        Salary s = (Salary) o;
+        return Objects.equals(salary, s.getSalary())
+                && Objects.equals(currency, s.getCurrency());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(salary, currency);
     }
 
     @Override

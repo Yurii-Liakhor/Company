@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -29,17 +30,22 @@ public class Worker {
     private String passport;
     private Date birthDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Salary salary;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Job job;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Company company;
 
-    @OneToMany(mappedBy = "worker", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Car> cars = new ArrayList<>();
+
+    public Worker(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public Worker(String firstName, String lastName, String passport) {
         this.firstName = firstName;
@@ -57,14 +63,16 @@ public class Worker {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Worker worker = (Worker) o;
-        return id.equals(worker.id);
+        if (!(o instanceof Worker)) return false;
+        Worker w = (Worker) o;
+        return Objects.equals(firstName, w.getFirstName())
+                && Objects.equals(lastName, w.getLastName())
+                && Objects.equals(passport, w.getPassport());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(firstName, lastName, passport);
     }
 
     @Override

@@ -20,6 +20,9 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
 
     Optional<Worker> findWorkerByPassport(String passport);
 
+    @Query("SELECT new Worker(w.firstName, w.lastName) FROM Worker w WHERE w.passport = ?1")
+    Optional<Worker> findSimpleWorkerByPassport(String passport);
+
     List<Worker> findWorkersByJobId(Long jobId);
     List<Worker> findWorkersByCompanyId(Long jobId);
 
