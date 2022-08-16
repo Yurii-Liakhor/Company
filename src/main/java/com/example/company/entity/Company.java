@@ -36,13 +36,15 @@ public class Company {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Company)) return false;
-        Company c = (Company) o;
-        return Objects.equals(companyName, c.getCompanyName());
+
+        Company company = (Company) o;
+
+        return getCompanyName().equals(company.getCompanyName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(companyName);
+        return getCompanyName().hashCode();
     }
 
     @Override

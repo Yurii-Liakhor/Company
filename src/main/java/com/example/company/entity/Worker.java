@@ -64,15 +64,20 @@ public class Worker {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Worker)) return false;
-        Worker w = (Worker) o;
-        return Objects.equals(firstName, w.getFirstName())
-                && Objects.equals(lastName, w.getLastName())
-                && Objects.equals(passport, w.getPassport());
+
+        Worker worker = (Worker) o;
+
+        if (!getFirstName().equals(worker.getFirstName())) return false;
+        if (!getLastName().equals(worker.getLastName())) return false;
+        return getPassport().equals(worker.getPassport());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, passport);
+        int result = getFirstName().hashCode();
+        result = 31 * result + getLastName().hashCode();
+        result = 31 * result + getPassport().hashCode();
+        return result;
     }
 
     @Override

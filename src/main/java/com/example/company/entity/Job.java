@@ -33,13 +33,15 @@ public class Job {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Job)) return false;
-        Job j = (Job) o;
-        return Objects.equals(jobName, j.getJobName());
+
+        Job job = (Job) o;
+
+        return getJobName().equals(job.getJobName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobName);
+        return getJobName().hashCode();
     }
 
     @Override

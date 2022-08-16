@@ -42,15 +42,20 @@ public class Car {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Car)) return false;
-        Car c = (Car) o;
-        return Objects.equals(manufacturer, c.getManufacturer())
-                && Objects.equals(model, c.getModel())
-                && Objects.equals(carNumber, c.getCarNumber());
+
+        Car car = (Car) o;
+
+        if (!getManufacturer().equals(car.getManufacturer())) return false;
+        if (!getModel().equals(car.getModel())) return false;
+        return getCarNumber().equals(car.getCarNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(manufacturer, model, carNumber);
+        int result = getManufacturer().hashCode();
+        result = 31 * result + getModel().hashCode();
+        result = 31 * result + getCarNumber().hashCode();
+        return result;
     }
 
     @Override

@@ -34,14 +34,18 @@ public class Salary {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Salary)) return false;
-        Salary s = (Salary) o;
-        return Objects.equals(salary, s.getSalary())
-                && Objects.equals(currency, s.getCurrency());
+
+        Salary salary1 = (Salary) o;
+
+        if (getSalary() != salary1.getSalary()) return false;
+        return getCurrency().equals(salary1.getCurrency());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(salary, currency);
+        int result = getSalary();
+        result = 31 * result + getCurrency().hashCode();
+        return result;
     }
 
     @Override
