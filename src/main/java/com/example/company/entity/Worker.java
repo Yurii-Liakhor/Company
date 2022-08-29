@@ -40,7 +40,7 @@ public class Worker {
     private Company company;
 
     @OneToMany(mappedBy = "worker", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<Car> cars = new ArrayList<>();
+    private final List<Car> cars = new ArrayList<>();
 
     public Worker(String firstName, String lastName) {
         this.firstName = firstName;

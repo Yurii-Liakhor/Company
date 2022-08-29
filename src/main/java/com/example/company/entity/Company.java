@@ -23,10 +23,10 @@ public class Company {
     private String companyName;
 
     @OneToMany(mappedBy = "company")
-    private List<Worker> workers = new ArrayList<>();
+    private final List<Worker> workers = new ArrayList<>();
 
     @OneToMany(mappedBy = "company")
-    private List<Car> cars = new ArrayList<>();
+    private final List<Car> cars = new ArrayList<>();
 
     public Company(String companyName) {
         this.companyName = companyName;

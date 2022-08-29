@@ -23,7 +23,7 @@ public class Job {
     private String jobName;
 
     @OneToMany(mappedBy = "job")
-    private List<Worker> workers = new ArrayList<>();
+    private final List<Worker> workers = new ArrayList<>();
 
     public Job(String jobName) {
         this.jobName = jobName;
