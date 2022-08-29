@@ -30,6 +30,7 @@ class CarServiceTest {
     void testThrowsExceptionAndRollback() throws Exception {
         System.out.println("testThrowsExceptionAndRollback");
         carService.addCars(null, "new_manufacturer", "new_model");
+
 //        assertThrows(Exception.class, () -> carService.addCars(null, "new_manufacturer", "new_model"));
 //        assertEquals(0, carRepository.count());
     }

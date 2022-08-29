@@ -43,7 +43,7 @@ public class CarService {
         String resultCarNumber = carNumber;
         try {
             carValidateService.validateCarNumber(carNumber);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             resultCarNumber = "default_carnumber";
         }
 
@@ -53,4 +53,5 @@ public class CarService {
                 .model(model)
                 .build());
     }
+
 }

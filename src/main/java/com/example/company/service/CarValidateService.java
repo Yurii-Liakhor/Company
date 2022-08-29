@@ -13,7 +13,8 @@ public class CarValidateService {
     @Transactional
     public void validateCarNumber(String carNumber) {
         if(carNumber == null || carNumber.isBlank() || carRepository.existsByCarNumber(carNumber)) {
-            throw new RuntimeException("Car number is not valid");
+            throw new IllegalArgumentException("Car number is not valid");
         }
     }
+
 }
